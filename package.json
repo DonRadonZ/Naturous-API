@@ -1,0 +1,12 @@
+{
+  "name": "Naturous",
+  "version": "1.0.0",
+  "description": "NodeJS course work about backend mongodb",
+  "main": "app.js",
+  "repository": "https://gitlab.com/supachai27102000/naturous-api.git",
+  "author": "Supachai Sinkaseam",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
