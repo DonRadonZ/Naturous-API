@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "NodeJS course work about backend mongodb",
   "main": "app.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
   "repository": "https://gitlab.com/supachai27102000/naturous-api.git",
   "author": "Supachai Sinkaseam",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.0"
   }
 }
