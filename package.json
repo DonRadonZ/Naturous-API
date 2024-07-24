@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start:dev": "nodemon server.js",
-    "start:prod": "NODE_ENV=production nodemon server.js"
+    "start:prod": "NODE_ENV=production nodemon server.js",
+    "debug": "ndb server.js"
   },
   "repository": "https://gitlab.com/supachai27102000/naturous-api.git",
   "author": "Supachai Sinkaseam",
@@ -24,6 +25,7 @@
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.0",
     "morgan": "^1.10.0",
+    "ndb": "^1.1.5",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
     "slugify": "^1.6.6",
