@@ -9,11 +9,21 @@ const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSW
 
 mongoose
   .connect(DB, {    
-}).then(() => {
-    console.log('DB connection successful!');
+  })
+  .then(() => { console.log('DB connection successful!');
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`App running on ${port}...`);
 });
+
+process.on('unhandleRejection', err => {
+  console.log(err.name, err.message);
+  console.log('UNHANDLER REJECTION! 💥 SHUTTING down...');
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+
