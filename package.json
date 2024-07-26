@@ -12,6 +12,7 @@
   "author": "Supachai Sinkaseam",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "eslint": "^9.2.0",
     "eslint-config-airbnb": "^19.0.4",
