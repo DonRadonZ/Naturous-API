@@ -28,6 +28,7 @@
     "mongoose": "^8.5.0",
     "morgan": "^1.10.0",
     "ndb": "^1.1.5",
+    "nodemailer": "^6.9.14",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
     "pug": "^3.0.3",
