@@ -19,8 +19,6 @@ const userSchema = new mongoose.Schema({
     },
     photo: {
         type: String,
-        // required: [true, "photo must be required"],
-        // unique: true
     },
     role:{
         type: String,
@@ -41,13 +39,25 @@ const userSchema = new mongoose.Schema({
                 // This only works on CREATE and SAVE!!!
                 return el === this.password;
             },
-            message: 'Password are not the same'
+            message: 'Password are not the same!'
         }
     },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
 });
+
+userSchema.pre('save', async function (next) {
+    // Only run this function if password was actually modified
+    if(!this.isModified('password')) return next();
+    
+    // Hash the password with cost of 12
+    this.password = await bcrypt.hash(this.password, 12);
+  
+    // Delete passwordConfirm field
+    this.passwordConfirm = undefined;
+    next();
+  });
 
 userSchema.pre('save', async function (next) {
   // Only run this function if password was actually modified
@@ -57,7 +67,7 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, 12);
 
   // Delete passwordConfirm field
-  this.passwordConfirm = undefined;
+  this.passwordChangedAt = Date.now() - 1000;
   next();
 });
 
