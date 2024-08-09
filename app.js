@@ -1,23 +1,23 @@
-const path = require('path')
-const express = require('express');
-const morgan = require('morgan');
-const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
-const mongoSanitize = require('express-mongo-sanitize');
-const hpp = require("hpp");
+import { join } from 'path';
+import express, { serverStatic, json } from 'express';
+import morgan from 'morgan';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
+import hpp from "hpp";
 
-const AppError = require('./utils/appError');
-const tourRouter = require('./routes/tourRoutes');
-const userRouter = require('./routes/userRoutes');
-const globalErrorHandler = require('./controllers/errorController');
-const XssClean = require('./utils/XssCleaner');
+import AppError from './utils/appError';
+import tourRouter from './routes/tourRoutes';
+import userRouter from './routes/userRoutes';
+import globalErrorHandler from './controllers/errorController';
+import XssClean from './utils/XssCleaner';
 
 const app = express();
 
 app.set('view enging', 'pug');
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', join(__dirname, 'views'))
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(serverStatic(join(__dirname, 'public')));
 
 // 1) GLOBAL MIDDLEWARE
 // Set Security HTTP headers
@@ -38,7 +38,7 @@ app.use('/api', limiter);
 
 
 // Body parser, reading data from body into req.body
-app.use(express.json({ limit: '10kb' }));
+app.use(json({ limit: '10kb' }));
 
 // Data sanitization aganist NoSQL query injection
 app.use(mongoSanitize());
@@ -59,7 +59,7 @@ app.use(hpp({
 }));
 
 // Serving static files
-app.use(express.static(` ${__dirname}/public`))
+app.use(serverStatic(` ${__dirname}/public`))
 
 // Test middleware
 app.use((req, res, next) => {
@@ -85,4 +85,4 @@ app.all('*',(req, res, next) => {
 app.use(globalErrorHandler);
 
 // 4) START SERVER
-module.exports = app;
+export default app;

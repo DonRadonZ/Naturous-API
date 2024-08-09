@@ -1,6 +1,6 @@
-const xss = require('xss');
+import xss from 'xss';
  
-module.exports = (options) => {
+export default (options) => {
   // for now, options don't do anything
   return (req, res, next) => {
     // run each key in req.body through a filter

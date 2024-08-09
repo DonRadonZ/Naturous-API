@@ -1,7 +1,7 @@
-const User = require('./../models/userModel').default;
+const User = require('./../models/userModel').default.default;
 
-const AppError = require('../utils/appError');
-const catchAsync = require('./../utils/catchAsync');
+const AppError = require('../utils/appError').default;
+const catchAsync = require('./../utils/catchAsync').default;
 const filterObj = (obj, ...allowedFields) => {
     const newObj = {};
   Object.keys(obj).forEach(el => {
