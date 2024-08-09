@@ -9,7 +9,7 @@ const hpp = require("hpp");
 const AppError = require('./utils/appError');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
-const globalErrorHandler = require('./controllers/errorController');
+const globalErrorHandler = require('./controllers/errorController').default;
 const XssClean = require('./utils/XssCleaner');
 
 const app = express();

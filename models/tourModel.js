@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const slugify = require('slugify');
+import { Schema, model } from 'mongoose';
+import slugify from 'slugify';
 
 
-const tourSchema = new mongoose.Schema({
+const tourSchema = new Schema({
     name: {
       type: String,
       required: [true, "A tour must have a name"],
@@ -128,6 +128,6 @@ tourSchema.pre('aggregate', function(next){
   next();
 })
 
-const Tour = mongoose.model('Tour', tourSchema);
+const Tour = model('Tour', tourSchema);
 
-module.exports = Tour;
+export default Tour;
