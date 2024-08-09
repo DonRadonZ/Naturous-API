@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "NodeJS course work about backend mongodb",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "start:dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",

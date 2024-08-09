@@ -6,11 +6,11 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import hpp from "hpp";
 
-import AppError from './utils/appError';
-import tourRouter from './routes/tourRoutes';
-import userRouter from './routes/userRoutes';
-import globalErrorHandler from './controllers/errorController';
-import XssClean from './utils/XssCleaner';
+import AppError from './utils/appError.js';
+import tourRouter from './routes/tourRoutes.js';
+import userRouter from './routes/userRoutes.js';
+import globalErrorHandler from './controllers/errorController.js';
+import XssClean from './utils/XssCleaner.js';
 
 const app = express();
 

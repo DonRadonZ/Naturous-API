@@ -8,7 +8,7 @@ process.on('uncaughtException', err => {
 });
 
 config({path: './config.env'});
-import { listen } from './app';
+import app from './app.js';
 
 const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
 
@@ -18,7 +18,7 @@ connect(DB, {
 });
 
 const port = process.env.PORT || 3000;
-const server = listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`App running on ${port}...`);
 });
 
