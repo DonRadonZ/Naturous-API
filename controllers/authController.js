@@ -1,10 +1,10 @@
-const crypto = require('crypto');
-const { promisify } = require('util');
-const jwt = require('jsonwebtoken');
-const User = require('./../models/userModel').default;
-const catchAsync = require('./../utils/catchAsync').default;
-const AppError = require('../utils/appError').default;
-const sendEmail = require('./../utils/email').default;
+import { createHash } from 'crypto';
+import { promisify } from 'util';
+import jwt from 'jsonwebtoken';
+import User from './../models/userModel.js';
+import catchAsync from './../utils/catchAsync.js';
+import AppError from '../utils/appError.js';
+import sendEmail from './../utils/email.js';
 
 const signToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -35,7 +35,7 @@ const createSendToken = (user, statusCode, res) => {
   });
 }
 
-exports.signup = catchAsync(async (req, res, next) => {
+export const signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -46,7 +46,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   createSendToken(newUser, 201, res);
 });
 
-exports.login = catchAsync(async (req, res, next) => {
+export const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   
   // 1) Check if email and password exist
@@ -64,7 +64,7 @@ exports.login = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
-exports.protect = catchAsync(async (req, res, next) => {
+export const protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check of it's there
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -101,7 +101,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 })
 
-exports.restrictTo = (...roles) => {
+export function restrictTo(...roles) {
   return (req, res, next) => {
     // roles ['admin', 'lead-guide']. role="user"
     if(!roles.includes(req.user.roles)){
@@ -110,9 +110,9 @@ exports.restrictTo = (...roles) => {
 
     next();
   };
-};
+}
 
-exports.forgotPassword = catchAsync(async (req, res, next) => {
+export const forgotPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on POSTed email
   const user = await User.findOne({ email: req.body.email })
   if (!user) {
@@ -148,10 +148,9 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 }
 });
 
-exports.resetPassword = catchAsync(async (req, res, next) => {
+export const resetPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on the token
-  const hashedToken = crypto
-  .createHash('sha256')
+  const hashedToken = createHash('sha256')
   .update(req.params.token)
   .digest('hex');
 
@@ -174,7 +173,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
-exports.updatePassword = catchAsync(async(req, res, next) => {
+export const updatePassword = catchAsync(async(req, res, next) => {
   // 1) Get user from collection
   const user = User.findOne({ email }).select("+password")
   // 2) Check if POSTed current password is correct

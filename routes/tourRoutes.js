@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { aliasTopTours, getAllTours, getTourStats, getMonthlyPlan, createTour, getTour, updateTour, deleteTour } from '../controllers/tourController';
-import { protect, restrictTo } from '../controllers/authController';
+import { aliasTopTours, getAllTours, getTourStats, getMonthlyPlan, createTour, getTour, updateTour, deleteTour } from '../controllers/tourController.js';
+import { protect, restrictTo } from '../controllers/authController.js';
 
 const tourRouter = Router();
 

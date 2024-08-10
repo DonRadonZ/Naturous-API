@@ -1,7 +1,7 @@
 import { randomBytes, createHash } from 'crypto';
 import { Schema, model } from 'mongoose';
-import { isEmail } from 'validator';
-import { hash, compare } from 'bcryptjs';
+import validator from 'validator';
+import bcrypt from 'bcryptjs';
 
 //name, email, photo, password, passwordConfirm
 const userSchema = new Schema({
@@ -15,7 +15,7 @@ const userSchema = new Schema({
         required: [true, "Email must be required"],
         unique: true,
         lowercase: true,
-        validate: [isEmail, 'Please provide a valid email']
+        validate: [validator.isEmail, 'Please provide a valid email']
     },
     photo: {
         type: String,
@@ -57,7 +57,7 @@ userSchema.pre('save', async function (next) {
     if(!this.isModified('password')) return next();
     
     // Hash the password with cost of 12
-    this.password = await hash(this.password, 12);
+    this.password = await bcrypt.hash(this.password, 12);
   
     // Delete passwordConfirm field
     this.passwordConfirm = undefined;
@@ -83,7 +83,7 @@ userSchema.pre(/^find/, function(next) {
 
 
 userSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
-    return await compare(candidatePassword, userPassword);
+    return await bcrypt.compare(candidatePassword, userPassword);
 }
 
 userSchema.methods.changedPasswordAfter = function(JWTTimestamp){
