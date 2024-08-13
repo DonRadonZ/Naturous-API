@@ -37,7 +37,7 @@ const createSendToken = (user, statusCode, res) => {
 }
 
 export const signup = catchAsync(async (req, res, next) => {
-  const newUser = await create({
+  const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
@@ -55,7 +55,7 @@ export const login = catchAsync(async (req, res, next) => {
     return next(new AppError('Please provide email and password!', 400));
   }
   // 2) Check if user exists && password is correct
-  const user = await findOne({ email }).select('+password');
+  const user = await User.findOne({ email }).select('+password');
    
     if (!user || !await user.correctPassword(password, user.password)) {
         return next(new AppError('Incorrect email or password', 401))
@@ -81,7 +81,7 @@ export const protect = catchAsync(async (req, res, next) => {
   const decoded = await promisify((verify)(token, process.env.JWT_SECRET));
 
   // 3) Check if user still exists
-  const currentUser = await findById(decoded.id);
+  const currentUser = await User.findById(decoded.id);
   if(!currentUser) {
     return next(
       new AppError(
@@ -100,7 +100,7 @@ export const protect = catchAsync(async (req, res, next) => {
   // GRANT ACCESS TO PROTECTED ROUTE
   req.user = currentUser;
   next();
-})
+});
 
 export function restrictTo(...roles) {
   return (req, res, next) => {
