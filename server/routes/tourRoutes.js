@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { aliasTopTours, getAllTours, getTourStats, getMonthlyPlan, createTour, getTour, updateTour, deleteTour } from '../controllers/tourController.js';
 import { protect, restrictTo } from '../controllers/authController.js';
 
-const tourRouter = Router();
+const router = Router();
 
 // router.param('id', tourController.checkID);
 
@@ -13,24 +13,24 @@ const tourRouter = Router();
 
 // Add it to the post handler stack
 
-tourRouter
+router
     .route('/top-5-cheap')
     .get(aliasTopTours, getAllTours);
 
-tourRouter
+router
     .route('/tour-stats')
     .get(getTourStats);
 
-tourRouter
+router
     .route('/monthly-plan/:year')
     .get(getMonthlyPlan);
 
-tourRouter
+router
     .route('/')
     .get(protect, getAllTours)
     .post(createTour);
 
-tourRouter
+router
     .route('/:id')
     .get(getTour)
     .patch(updateTour)
@@ -40,4 +40,4 @@ tourRouter
         deleteTour
     );
 
-export default tourRouter;
+export default router;
