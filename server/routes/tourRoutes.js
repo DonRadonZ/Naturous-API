@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { aliasTopTours, getAllTours, getTourStats, getMonthlyPlan, createTour, getTour, updateTour, deleteTour } from '../controllers/tourController.js';
 import { protect, restrictTo } from '../controllers/authController.js';
-import { createReview } from '../controllers/reviewController.js';
+import reviewRouter from './reviewRoutes.js';
+
 
 const router = Router();
 
@@ -13,6 +14,8 @@ const router = Router();
 //If not send back 400 (bad request)
 
 // Add it to the post handler stack
+
+router.use(':/tourId/reviews', reviewRouter);
 
 router
     .route('/top-5-cheap')
@@ -45,8 +48,12 @@ router
 // GET /tour/234fad4/reviews
 // GET /tour/234fad4/reviews/94887fda
 
-router.
-    route('/:tourId/reviews')
-    .post(protect, restrictTo('users'), createReview)
+// router.
+//     route('/:tourId/reviews')
+//     .post(
+//         protect,
+//         restrictTo('users'), 
+//         createReview
+//     );
 
 export default router;
