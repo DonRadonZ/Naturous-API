@@ -1,8 +1,17 @@
 FROM node:boron
 
-RUN mkdir -p /usr/src/app
+WORKDIR /app
 
-COPY package.json /usr/src/app/
+COPY package*.json ./
+
 RUN yarn install
+
+COPY . .
+
+ENV PORT=3000
+
+EXPOSE  3000
+
+CMD ["yarn","start"]
 
 
