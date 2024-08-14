@@ -9,7 +9,8 @@ import hpp from "hpp";
 import AppError from './utils/appError.js';
 import tourRouter from './routes/tourRoutes.js';
 import userRouter from './routes/userRoutes.js';
-import reviewRouter from './routes/reviewRoutes.js'
+import reviewRouter from './routes/reviewRoutes.js';
+import viewRouter from './routes/viewRoutes.js';
 import globalErrorHandler from './controllers/errorController.js';
 import XssClean from './utils/XssCleaner.js';
 import { fileURLToPath } from "url";
@@ -76,25 +77,8 @@ app.use((req, res, next) => {
 })
 
 // 3) ROUTES
-app.get('/', (req, res) => {
-  res.status(200).render('base', {
-    tour: 'The Forest Hiker',
-    user: "DonSan"
-  });
-});
 
-app.get('/overview', (req, res) => {
-  res.status(200).render('overview', {
-    title: 'All Tours'
-  });
-});
-
-app.get('/tour', (req, res) => {
-  res.status(200).render('tour', {
-    title: 'The Forest Hiker Tour'
-  });
-});
-
+app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
