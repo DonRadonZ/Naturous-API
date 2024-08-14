@@ -1,14 +1,13 @@
 FROM node:boron
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY ./package.json ./
+COPY ./yarn.lock ./
 
 RUN yarn install
 
 COPY . .
-
-ENV PORT=3000
 
 EXPOSE  3000
 
