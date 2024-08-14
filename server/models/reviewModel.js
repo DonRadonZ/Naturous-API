@@ -1,6 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import User from "./userModel.js";
-import Tour from "./tourModel.js";
+
 
 const reviewSchema = new Schema({
     review: {
@@ -16,14 +15,14 @@ const reviewSchema = new Schema({
     user: [
         {
             type: Schema.ObjectId,
-            ref: User,
+            ref: 'User',
             required: [true, 'Review must belong to a user.']
         }
     ],
     tour: [
         {
             type: Schema.ObjectId,
-            ref: Tour,
+            ref: 'Tour',
             required: [true, 'Review must belong to a tour.']
         }
     ],
@@ -34,9 +33,13 @@ const reviewSchema = new Schema({
 });
 
 reviewSchema.pre(/^find/, function(next){
+    // this.populate({
+    //     path:'tour',
+    //     select:"name"}).populate({
+    //         path: 'user',
+    //         select: 'name photo'
+    //     });
     this.populate({
-        path:'tour',
-        select:"name"}).populate({
             path: 'user',
             select: 'name photo'
         });
@@ -46,3 +49,4 @@ reviewSchema.pre(/^find/, function(next){
 const Review = mongoose.model('Review', reviewSchema);
 
 export default Review;
+

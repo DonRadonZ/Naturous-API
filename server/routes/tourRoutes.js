@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { aliasTopTours, getAllTours, getTourStats, getMonthlyPlan, createTour, getTour, updateTour, deleteTour } from '../controllers/tourController.js';
 import { protect, restrictTo } from '../controllers/authController.js';
+import { createReview } from '../controllers/reviewController.js';
 
 const router = Router();
 
@@ -39,5 +40,13 @@ router
         restrictTo('admin', 'lead-guide'),
         deleteTour
     );
+
+// POST /tour/234fad4/reviews
+// GET /tour/234fad4/reviews
+// GET /tour/234fad4/reviews/94887fda
+
+router.
+    route('/:tourId/reviews')
+    .post(protect, restrictTo('users'), createReview)
 
 export default router;

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { updateMe, deleteMe, getAllUsers, createUser, getUser, updateUser, deleteUser } from '../controllers/userController.js';
 import { signup, login, forgotPassword, resetPassword, protect, updatePassword } from '../controllers/authController.js';
 
+
 const router = Router();
 
 router.post('/signup', signup);
@@ -25,5 +26,8 @@ router
     .get(getUser)
     .patch(updateUser)
     .delete(deleteUser);
+
+
+
 
     export default router;
