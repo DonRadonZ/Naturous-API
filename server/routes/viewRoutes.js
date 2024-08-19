@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getOverview, getTour } from "../controllers/viewController";
+import { getLoginForm, getOverview, getTour } from "../controllers/viewController.js";
 
 const router = Router();
 
@@ -10,6 +10,6 @@ router.get('/tour/:slug',getTour );
 
 // /login
 
-router.get('/login', Login);
+router.get('/login', getLoginForm);
 
 export default router;
