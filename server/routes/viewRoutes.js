@@ -6,6 +6,10 @@ const router = Router();
 
 router.get('/', getOverview);
 
-router.get('/tour',getTour );
+router.get('/tour/:slug',getTour );
+
+// /login
+
+router.get('/login', Login);
 
 export default router;
