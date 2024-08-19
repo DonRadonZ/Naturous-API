@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { updateMe, deleteMe, getAllUsers, createUser, getUser, updateUser, deleteUser } from '../controllers/userController.js';
+import { updateMe, deleteMe, getAllUsers, createUser, getUser, updateUser, deleteUser, getMe } from '../controllers/userController.js';
 import { signup, login, forgotPassword, resetPassword, protect, updatePassword } from '../controllers/authController.js';
 
 
@@ -13,6 +13,7 @@ router.patch('/resetPassword/:token', resetPassword);
 
 router.patch('/updateMyPassword', protect, updatePassword)
 
+router.get('/me', protect, getMe, getUser);
 router.patch('/updateMe', protect, updateMe);
 router.delete('/deleteMe', protect, deleteMe);
 
