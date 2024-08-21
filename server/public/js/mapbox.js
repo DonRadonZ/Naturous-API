@@ -1,6 +1,7 @@
 const locations = JSON.parse(document.getElementById('map').dataset.locations);
 
-var map = L.map('map', { zoomControl: false });
+export const displayMap = (locations) => {
+  var map = L.map('map', { zoomControl: false });
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution:
@@ -31,3 +32,5 @@ map.fitBounds(bounds);
  
 // Disable scroll on map
 map.scrollWheelZoom.disable();
+}
+

@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import hpp from "hpp";
+import * as cookies from "cookie-parser"
 
 import AppError from './utils/appError.js';
 import tourRouter from './routes/tourRoutes.js';
@@ -14,6 +15,7 @@ import viewRouter from './routes/viewRoutes.js';
 import globalErrorHandler from './controllers/errorController.js';
 import XssClean from './utils/XssCleaner.js';
 import { fileURLToPath } from "url";
+
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -46,6 +48,7 @@ app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
+app.use(cookies)
 
 // Data sanitization aganist NoSQL query injection
 app.use(mongoSanitize());

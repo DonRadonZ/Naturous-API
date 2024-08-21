@@ -64,42 +64,30 @@ export const login = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
-export const protect = catchAsync(async (req, res, next) => {
-  // 1) Getting token and check of it's there
-  let token;
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    token = req.headers.authorization.split(' ')[1];
-  }
+// Only for rendered pages, no errors!
+export const isLoggedIn = catchAsync(async (req, res, next) => {
+  
+   if (req.cookies.jwt) {
+  // 1) Verification token
+  const decoded = await promisify((jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET));
 
-  if (!token){
-    return next(
-      new AppError('You are not logged in! Please login to get access.', 401)
-    );
-  }
-  // 2) Verification token
-  const decoded = await promisify((jwt.verify)(token, process.env.JWT_SECRET));
-
-  // 3) Check if user still exists
+  // 2) Check if user still exists
   const currentUser = await User.findById(decoded.id);
   if(!currentUser) {
-    return next(
-      new AppError(
-        'The user token belonging to this token does no longer exist.', 
-        401
-      )
-    );
+    return next();
   }
 
-  // 4) Check if user changed password after the token was issued
+  // 3) Check if user changed password after the token was issued
   if (currentUser.changePasswordAfter(decoded.iat)){
-    return next(new AppError('User recently changed password! Please login again', 401)
-    );
+    return next();
   }
 
-  // GRANT ACCESS TO PROTECTED ROUTE
-  req.user = currentUser;
+  // THERE IS A LOGGED IN USER
+  res.locals.user = currentUser;
   next();
-})
+  }
+  next();
+});
 
 export function restrictTo(...roles) {
   return (req, res, next) => {

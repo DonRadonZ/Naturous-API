@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { updateMe, deleteMe, getAllUsers, createUser, getUser, updateUser, deleteUser, getMe } from '../controllers/userController.js';
-import { signup, login, forgotPassword, resetPassword, protect, updatePassword, restrictTo } from '../controllers/authController.js';
+import { signup, login, forgotPassword, resetPassword, updatePassword, restrictTo, isLoggedIn } from '../controllers/authController.js';
 
 
 const router = Router();
@@ -11,7 +11,7 @@ router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);
 
 // Protect all routes after the middleware
-router.use(protect);
+router.use(isLoggedIn);
 
 router.patch('/updateMyPassword', updatePassword)
 

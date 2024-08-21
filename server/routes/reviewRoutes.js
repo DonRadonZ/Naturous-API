@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { protect, restrictTo } from "../controllers/authController.js";
+import { isLoggedInt, restrictTo } from "../controllers/authController.js";
 import { createReview, deleteReview, getAllReviews, getReview, setTourUserIds, updateReview } from "../controllers/reviewController.js";
 
 const router = Router({ mergeParams: true });
 
-router.use(protect);
+router.use(isLoggedIn);
 
 router
     .route('/')
