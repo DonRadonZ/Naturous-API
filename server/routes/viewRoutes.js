@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getLoginForm, getOverview, getTour } from "../controllers/viewController.js";
-import { isLoggedIn, protect } from "../controllers/authController.js";
+import { isLoggedIn } from "../controllers/authController.js";
 
 const router = Router();
 
