@@ -23,6 +23,12 @@ export const getOverview = catchAsync(async (req, res) => {
   });
 });
 
+export const getAccount = (req, res) => {
+  res.status(200).render('account', {
+    title: 'Your account'
+  });
+}
+
 export const getTour = catchAsync(async(req, res, next) => {
   // 1) Get the data, for the requested tour (including reviews and guides)
   const tour = await Tour.findOne({slug: req.params.slug}).populate({ path: 'review' , fields: 'review rating user'});
