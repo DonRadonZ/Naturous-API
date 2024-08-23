@@ -32,15 +32,27 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
     
 });
 
-export const createBookingCheckout = catchAsync(async(req,res,next) => {
+export const createBookingCheckout = catchAsync(async (req, res, next) => {
     // This is only TEMPORARY, because it's UNSECURE: everyone can make bookings without paying
-    const {tour, user, price} = req.query;
-    if(!tour && !user && !price) return next();
-    await Booking.create({tour, user, price });
+    const { tour, user, price } = req.query;
+    if (!tour && !user && !price) return next();
+    await Booking.create({ tour, user, price });
 
     
     res.redirect(req.originalUrl.split('?'))[0];
-})
+});
+
+export const webhookCheckout = (req, res, next) => { 
+    const signature = req.headers["stripe-signature"];
+
+    let event;
+    try {
+        event = stripe.webhook.constructEvent(req.body, signature, process.env.STRIPE_WEBHOOK_SECRET);
+    } catch (err) {
+       return res.status(400).send(`Webhook error: ${err.message}`);
+ 
+    }
+}
 
 export const createBooking = createOne(Booking);
 export const getBooking = getOne(Booking)
