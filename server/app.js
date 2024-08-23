@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import hpp from "hpp";
 import cookieParser from "cookie-parser"
-
+import compression from "compression"
 import AppError from './utils/appError.js';
 import tourRouter from './routes/tourRoutes.js';
 import userRouter from './routes/userRoutes.js';
@@ -71,6 +71,8 @@ app.use(hpp({
 
 // Serving static files
 app.use(express.static(` ${__dirname}/public`))
+
+app.use(compression())
 
 // Test middleware
 app.use((req, res, next) => {
