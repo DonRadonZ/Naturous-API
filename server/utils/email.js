@@ -1,5 +1,6 @@
 import { createTransport } from 'nodemailer';
 import pug from 'pug'
+import htmlToText from 'html-to-text'
 // new Email(user, url).sendWelcome();
 
 export default class Email {
@@ -10,26 +11,29 @@ export default class Email {
         this.from = `Supachai Sinkaseam<${process.env.EMAIL_FROM}>`;
     }
 
-    createTransport(){
+    newTransport(){
         if(process.env.NODE_ENV === 'production'){
             // Sendgrid
             return 1;
         }
         return createTransport({
-            host: process.env.EMAIL_HOST,
-            port: process.env.EMAIL_PORT,
+            service: 'SendGrid',
             auth: {
-                user: process.env.EMAIL_USERNAME,
-                pass: process.env.EMAIL_PASSWORD
+                user: process.env.SENDGRID_USERNAME,
+                pass: process.env.SENDGRID_PASSWORD
             }
             // Active in gmail "less secure app" option
         });
     }
     
     // Send the actual email
-    send(template, subject){
+    async send(template, subject){
         // 1.) Render HTML based on a pug template
-        const html = pug.renderFile(`${__dirname}/../views/emails/${template}.pug`)
+        const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
+            firstName: this.firstName,
+            url: this.url,
+            subject
+        })
         
         // 2) Define email options
         const mailOptions = {
@@ -37,30 +41,21 @@ export default class Email {
             to: this.to,
             subject,
             html,
-            text: options.message,
+            text: htmlToText.fromString(html),
             // html: 
         };
 
         // 3) Create a transport and send email
-
+        await this.newTransport().sendMail(mailOptions);
     }
 
 
-    sendWelcome(){
-        this.send('welcome', 'Welcome to the Natours Family!');
+    async sendWelcome(){
+        await this.send('welcome', 'Welcome to the Natours Family!');
+        
     } 
-}
 
-const sendEmail = async (options) => {
-    // 2) Define the email options
-    const mailOptions = {
-        from: "Supachai Sinkaseam<test27102000@gmail.com>",
-        to: options.email,
-        subject: options.subject,
-        text: options.message,
-        // html: 
+    async sendPasswordReset() {
+        await this.send('passwordReset', 'Your password reset token (valid for only 10 minutes)')
     }
-    // 3) Actually send the email
-    await transporter.sendMail(mailOptions)
-};
-
+}
