@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getLoginForm, getOverview, getTour } from "../controllers/viewController.js";
+import { getLoginForm, getOverview, getTour, updateUserData } from "../controllers/viewController.js";
 import { isLoggedIn, protect } from "../controllers/authController.js";
 
 const router = Router();
@@ -13,5 +13,7 @@ router.get('/tour/:slug', isLoggedIn, getTour );
 
 router.get('/login', isLoggedIn, getLoginForm);
 router.get('/me', protect, getAccount);
+
+router.post('/submit-user-data', protect,  updateUserData)
 
 export default router;
