@@ -6,6 +6,8 @@ import reviewRouter from './reviewRoutes.js';
 
 const router = Router();
 
+router.use(alerts);
+
 // router.param('id', tourController.checkID);
 
 // Create a checkBody middleware

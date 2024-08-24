@@ -2,6 +2,7 @@ import '@babel/polyfill'
 import { displayMap } from './mapbox';
 import {login} from './login'
 import { updateSettings } from './updateSettings';
+import { showAlert } from './alert';
 
 // DOM ELEMENTS
 const mapBox = document.getElementById('map');
@@ -56,6 +57,9 @@ if (userPasswordForm)
     document.getElementById('password-confirm').value = '';
 })
 
+const alertMessage = document.querySelector('body').dataset.alert;
+
+if (alert) showAlert('success', alertMessage, 20);
 
 
 

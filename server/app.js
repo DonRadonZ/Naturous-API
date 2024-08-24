@@ -7,14 +7,18 @@ import mongoSanitize from 'express-mongo-sanitize';
 import hpp from "hpp";
 import cookieParser from "cookie-parser"
 import compression from "compression"
+import cors from "cors"
 import AppError from './utils/appError.js';
 import tourRouter from './routes/tourRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import reviewRouter from './routes/reviewRoutes.js';
 import viewRouter from './routes/viewRoutes.js';
+import bookingRouter from './routes/bookingRoutes.js';
 import globalErrorHandler from './controllers/errorController.js';
 import XssClean from './utils/XssCleaner.js';
 import { fileURLToPath } from "url";
+import { webhookCheckout } from './controllers/bookingController.js';
+import bodyParser from 'body-parser';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,12 +27,24 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+app.enable('trust proxy');
+
 app.set('view enging', 'pug');
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 1) GLOBAL MIDDLEWARE
+// Implement CORS
+app.use(cors());
+// Access-Control-Allow-Origin
+// api.natours.com, natours.com
+// app.use(cors({
+//   origin: 'https://natours.com'
+// }))
+app.options('*', cors());
+// app.options('/api/v1/tours/:id', cors());
+
 // Set Security HTTP headers
 app.use(helmet());
 
@@ -45,6 +61,7 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
+app.post('/webhook-checkout', bodyParser.raw({type: 'app'}), webhookCheckout);
 
 // Body parser, reading data from body into req.body
 app.use(express.urlencoded({ limit: '10kb' }));
@@ -88,6 +105,7 @@ app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*',(req, res, next) => {
 
